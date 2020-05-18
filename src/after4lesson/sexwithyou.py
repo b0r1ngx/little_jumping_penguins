@@ -1,7 +1,33 @@
+# <->ЗАДАНИЕ: Каждый из N школьников некоторой школы знает Mᵢ языков.
+# Определите, какие языки знают все школьники и языки, которые знает хотя бы один из школьников.
+# <->ФОРМАТ ВВОДА: Первая строка входных данных содержит количество школьников N.
+# Далее идет N чисел Mᵢ, после каждого из чисел идет Mᵢ строк, содержащих названия языков,
+# которые знает i-й школьник. Длина названий языков не превышает 1000 символов,
+# количество различных языков не более 1000. 1≤N≤1000, 1≤Mᵢ≤500.
+# <->ФОРМАТ ВЫВОДА: В первой строке выведите количество языков, которые знают все школьники.
+# Начиная со второй строки - список таких языков. Затем - количество языков,
+# которые знает хотя бы один школьник, на следующих строках - список таких языков.
+# Входные данные:
+# 3
+# 3
+# Russian
+# English
+# Japanese
+# 2
+# Russian
+# English
+# 1
+# English
+# Вывод программы:
+# 1
+# English
+# 3
+# Russian
+# Japanese
+# English
+
 all_languages = set()
 how_all = 0
-we_all_know_this = set()
-how_unique = 0
 N = int(input())
 list_with_language_packets = [[] for i in range(N)]
 for teen in range(N):
@@ -17,19 +43,11 @@ for teen in range(len(list_with_language_packets)):
             all_languages.add(this)
             how_all += 1
 
-apply_for_first = list_with_language_packets[0]
-for teen in range(len(list_with_language_packets)):
-    # this = list_with_language_packets[teen]
-    for language in list_with_language_packets[teen]:
-        if language in we_all_know_this:
-            continue
-        for each in apply_for_first:
-            apply_for_first = list_with_language_packets[teen + 1]
-            if each == language:
-                we_all_know_this.add(language)
-                how_unique += 1
-                break
-print(how_unique)
+we_all_know_this = set(list_with_language_packets[0])
+for teen in range(1, len(list_with_language_packets)):
+    we_all_know_this = (we_all_know_this & set(list_with_language_packets[teen]))
+
+print(len(we_all_know_this))
 for i in we_all_know_this:
     print(i)
 print(how_all)
