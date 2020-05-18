@@ -1,11 +1,11 @@
-from copy import deepcopy
+import copy
 from sys import stdin
 
 
 class MatrixError(BaseException):
-    def __init__(self, m1, m2):
-        self.matrix1 = m1
-        self.matrix2 = m2
+    def __init__(self, matrix1, matrix2):
+        self.m1 = matrix1
+        self.matrix2 = matrix2
 
 
 class Matrix:
@@ -20,8 +20,8 @@ class Matrix:
         return len(self.m), len(self.m[0])
 
     def __add__(self, other):
-        if other != self:
-            RuntimeError()
+        if self.size() != other.size():
+            MatrixError(self, other)
         else:
             res = Matrix
             res.m = []
@@ -42,15 +42,17 @@ class Matrix:
     __rmul__ = __mul__
 
     def transpose(self):
-        result = Matrix
-        result.m = []
+        if self.size()[0] < 1 or self.size()[1] < 1:
+            return self
+        res = Matrix
+        res.m = []
         for i in range(len(self.m[0])):
             temp = []
             for j in range(len(self.m)):
                 x = self.m[j][i]
                 temp.append(x)
-            result.m.append(temp)
-        self.m = result.m
+            res.m.append(temp)
+        self.m = res.m
         return Matrix(self.m)
 
     @staticmethod
@@ -66,3 +68,4 @@ class Matrix:
 
 
 exec(stdin.read())
+
